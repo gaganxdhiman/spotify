@@ -1,0 +1,532 @@
+* {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    /* Prevents text selection */
+    -webkit-user-select: none;
+    /* For Safari */
+    -moz-user-select: none;
+    /* For Firefox */
+    -ms-user-select: none;
+    /* For IE/Edge */
+}
+
+@media (min-width: 1520px) {
+    /* for if scren greater than 1520*/
+
+    .card {
+        flex-grow: 1;
+    }
+
+    .card-container::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari */
+    }
+
+    .album-card {
+        flex-grow: 1;
+    }
+}
+
+@media (max-width: 1385px) {
+
+    .card {
+        flex-shrink: 0;
+    }
+
+
+    .album-card {
+        flex-shrink: 0;
+    }
+
+    .card-container {
+        flex-wrap: wrap;
+        position: relative;
+        /* height: fit- */
+        overflow-y: hidden;
+        transition: all 0.3s ease, transform 0.3s ease;
+    }
+
+    .album-container {
+        flex-wrap: wrap;
+        position: relative;
+        /* height: fit- */
+        overflow-y: hidden;
+        transition: all 0.3s ease, transform 0.3s ease;
+    }
+}
+
+
+
+@media (min-width:1320px) {
+    .main-logo-div {
+        background-image: url(../Assets/images/main-logo.svg);
+    }
+
+    .spotify-div {
+        display: flex;
+    }
+
+    .main-logo-div {
+        display: none;
+    }
+}
+
+
+@media (max-width: 1320px) {
+    .main-logo-div {
+        display: none;
+    }
+}
+
+
+@media (max-width:1220px) {
+    .left-section {
+        width: 280px;
+    }
+
+}
+
+@media (max-width:1000px) {
+    .card-container {
+        padding-left: 9px;
+        height: 223px;
+    }
+
+    .album-card {
+        width: 180px;
+        height: 234px;
+    }
+
+    .card {
+        width: 180px;
+        height: 205px;
+    }
+
+    .card-img-div {
+        /* width: 34px; */
+        height: 140px;
+    }
+
+    .card-container::-webkit-scrollbar {
+        /* width: 100px; */
+        height: 1px;
+        background-color: #121212;
+    }
+
+    .card-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.123);
+        /* Scrollbar color */
+        border-radius: 10px;
+        /* Rounded edges */
+    }
+
+    .card-container::-webkit-scrollbar-track {
+        background: transparent;
+        /* Scrollbar track color */
+    }
+
+    .album-container::-webkit-scrollbar {
+        /* width: 100px; */
+        height: 1px;
+        background-color: #121212;
+    }
+
+    .album-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.123);
+        /* Scrollbar color */
+        border-radius: 10px;
+        /* Rounded edges */
+    }
+
+    .album-container::-webkit-scrollbar-track {
+        background: transparent;
+        /* Scrollbar track color */
+    }
+
+    .album-container {
+        height: 240px;
+    }
+
+    .play-bar-div {
+        height: 80px;
+    }
+
+    .range-volume-div {
+        bottom: 52px;
+
+    }
+}
+
+@media (max-width:900px) {
+
+    .P-artist-h>h4 {
+        font-size: 17px;
+    }
+
+    .P-album-h>h4 {
+        font-size: 17px;
+    }
+
+    .P-artist-h>div {
+        font-size: 9px;
+    }
+
+    .P-album-h>div {
+        font-size: 9px;
+    }
+
+    .range-volume-div {
+        width: 100vw;
+        justify-content: end;
+        bottom: 58px;
+        padding-left: 68px;
+    }
+
+    .play-bar-div {
+        height: 90px;
+    }
+}
+
+@media (max-width:770px) {
+    .card-container {
+        flex-wrap: nowrap;
+        position: relative;
+        /* height: fit- */
+        /* border: 1px solid red; */
+        /* overflow-y: hidden; */
+        transition: all 0.3s ease, transform 0.3s ease;
+
+    }
+
+    .album-container {
+        flex-wrap: nowrap;
+        position: relative;
+        /* height: fit- */
+        /* border: 1px solid red; */
+        margin-top: 0;
+        transition: all 0.3s ease, transform 0.3s ease;
+
+    }
+
+    .P-album-h>div {
+        display: none;
+    }
+
+    .P-artist-h>div {
+        display: none;
+    }
+
+    .home-img-a {
+        display: none;
+    }
+
+    .signup-btn {
+        height: 27px;
+        width: 65px;
+        font-size: 10px;
+    }
+
+    .login-btn {
+        height: 27px;
+        width: 65px;
+        font-size: 10px;
+    }
+
+    /* --------------------------------- */
+    .P-artist-h {
+        padding: 13px 13px;
+    }
+
+    .P-album-h {
+        padding: 13px 13px;
+        margin-top: 5px;
+    }
+
+    .right-section {
+        width: 99%;
+        margin: 0px 0px;
+        padding: 0px 0px;
+    }
+
+    .main-section {
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .play-bar-div {
+        position: sticky
+    }
+
+    .card-container {
+        padding-left: 10px;
+    }
+
+    .album-container {
+        padding-left: 10px;
+    }
+
+    .left-section {
+        z-index: 10;
+        left: -100%;
+        position: absolute;
+        width: 300px;
+        height: 100%;
+        border-radius: 0 0 0 0;
+        transition: all 0.3s ease, transform 0.3s ease;
+        transition: left 0.3s ease-in-out;
+
+
+    }
+
+    .main-section {
+        height: 100%;
+
+    }
+
+    .play-bar-div {
+        bottom: 0;
+        position: fixed;
+    }
+
+    .footer {
+        display: none;
+    }
+
+    .main-logo-div {
+        background-image: url(../Assets/images/menu-bar.svg);
+        display: flex;
+
+    }
+
+    .play-bar-div {
+        z-index: 10;
+
+    }
+
+    .spotify-div {
+        display: none;
+    }
+
+    .range-volume-div {
+        bottom: 85px;
+    }
+
+    #song-name-info {
+        padding-left: 15px;
+    }
+
+    .play-bar-div {
+        height: 121px;
+    }
+
+    .song-duration {
+        top: 48px;
+    }
+
+}
+
+@media (min-width:770px) {
+    .left-section {
+        left: 0;
+    }
+
+    .left-closer {
+        display: none;
+    }
+}
+
+@media (max-width:570px) {
+    .no-song-div{
+   
+     
+       font-size: 12px;
+
+       
+
+    
+}
+
+    .search-div {
+        width: 89%;
+        justify-content: start;
+    }
+
+    .search-div-child {
+       width: 99%;
+    }
+
+    .search-bar {
+        flex: 1;
+        height: 40px;
+        width: 100%;
+    }
+
+    nav {
+        align-items: center;
+        justify-content: center;
+        padding-left: 9px;
+        padding-top: 3px;
+        z-index: 1000;
+    }
+
+    .logup-div {
+        display: none;
+    }
+
+    .main-logo-div {
+        width: 30px;
+    }
+
+    .main-logo-img {
+        height: 23px;
+    }
+
+    .lang-button {
+        display: none;
+    }
+
+    .play-bar-div {
+        height: 120px;
+
+    }
+
+    .song-bar {
+
+        width: 80vw;
+    }
+
+    .songs-card ul {
+        height: 101%;
+    }
+
+    .range-volume-div {
+        justify-content: end;
+        position: absolute;
+        width: 100%;
+        top: 13px;
+        padding-left: 32px;
+        align-items: center;
+    }
+
+    .left-section {
+        width: 324px;
+
+    }
+
+    .current-time {
+        width: 35px;
+    }
+
+    #range {
+        width: 100px;
+        height: 7px;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+
+
+    }
+
+    /* Blue bar (range measurement) */
+    #range::-webkit-slider-runnable-track {
+        height: 13px;
+
+        border-radius: 5px;
+
+    }
+
+    .speaker-full-img {
+        height: 18px;
+    }
+
+    .song-bar {
+        bottom: 20px;
+    }
+
+
+    .left-closer {
+        height: 93vh;
+    }
+
+    .song-duration {
+        top: 28px;
+    }
+
+    .play-bar-child {
+        top: 67px;
+        height: fit-content;
+    }
+    nav{
+        gap: 10px;
+    }
+}
+
+
+@media (max-width:430px) {
+    #song-name-info {
+        font-size: 15px;
+    }
+
+    .song-duration {
+        font-size: 12px;
+        width: 83%;
+    }
+
+    .songs-details-div {
+        top: 5px;
+        width: 90%;
+    }
+
+    .play-bar-div {
+        height: 120px;
+        
+    }
+
+    .play-bar-child {
+        gap: 23px;
+        height: fit-content;
+    }
+
+
+}
+
+@media (max-width:370px) {
+    .left-section {
+        width: 100%;
+    }
+    .left-closer{
+        display: none;
+    }
+}
+
+@media (max-width:355px) {}
+
+
+@media (max-height:730px) {
+    .P-album-h {
+        padding: 2px 13px;
+        margin-top: 5px;
+    }
+    .P-artist-h {
+        padding: 4px 13px;
+        margin-top: 2px;
+    }
+    
+    .songs-card ul {
+        height: 93%;
+    }
+}
+@media (max-height:660px) {
+    .songs-card ul {
+        height: 93%;
+    }
+
+}
+
+@media (max-height:630px) {
+    .songs-card ul {
+        height: 89%;
+    }
+
+}

@@ -1,0 +1,950 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: white;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: spotify-font;
+    src: url(../Assets/fonts/SpotifyMix-Regular.ttf) format('truetype');
+    font-weight: 500;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    /* border: 1px solid red; */
+    font-family: spotify-font;
+}
+
+/* some utility css */
+.invert {
+    filter: invert(1);
+}
+
+.invert0 {
+    filter: invert(0);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.border {
+    border: 1px solid red;
+}
+
+.weight-1 {
+    font-weight: lighter;
+    font-size: 10px;
+    color: rgb(180 180 180);
+}
+
+/* Nav Bar starts from here  */
+
+nav {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    z-index: 10;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+    padding-right: 10px;
+    align-items: center;
+    padding-left: 20px;
+    position: relative;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.main-logo-div {
+    background-image: url(.../Assets/images/main-logo.svg) format('truetype');
+    width: 37px;
+    object-fit: cover;
+    height: 36px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.search-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    gap: 15px;
+}
+
+.search-div-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.home-img {
+    height: 17px;
+    width: 25px;
+
+}
+
+.home-img-a:hover .home-img {
+    scale: 1.2;
+    transition: all 0.3s ease, transform 0.3s ease;
+}
+
+.search-img {
+    position: absolute;
+    left: 10px;
+    height: 20px;
+    filter: invert(1) brightness(0.5);
+    cursor: pointer;
+}
+
+.search-bar:hover .search-img {
+    filter: invert(1) brightness(0);
+}
+
+.search-bar {
+    width: 330px;
+    height: 40px;
+    background: #212121;
+    border-radius: 21px;
+    padding-left: 38px;
+    border: none;
+    color: white;
+    caret-color: white;
+
+}
+
+.search-bar::placeholder {
+    color: rgb(180 180 180);
+}
+
+.search-bar:focus {
+    border: none;
+    outline: 3px solid white;
+
+    background-color: #2A2A2A;
+
+}
+
+.search-bar:hover {
+    background-color: #2A2A2A;
+}
+
+.browse-div {
+    border-left: 1px solid grey;
+    height: 20px;
+    width: 43px;
+    position: absolute;
+    right: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.browse-div>img {
+    height: 20px;
+    cursor: pointer;
+}
+
+.browse-div>img:hover {
+    filter: brightness(0) invert(1);
+}
+
+.logup-div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.signup-btn {
+    color: rgb(180 180 180);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    height: 38px;
+    width: 78px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+
+    transition: all 0.3s ease, transform 0.3s ease;
+
+}
+
+.signup-btn:hover {
+    color: white;
+
+}
+
+.login-btn {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 5px 15px;
+    font-weight: bold;
+    border: 1px solid #cccccc;
+    height: 38px;
+    width: 78px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    transition: all 0.3s ease, transform 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #F0F0F0;
+    scale: 1.05;
+}
+
+.home-img-a {
+    background: #2A2A2A;
+    border-radius: 17px;
+    height: 35px;
+    width: 36px;
+    display: flex;
+    position: relative;
+    left: 10px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+/* Nav Bar Ends here */
+/* ---------------------------------------------- */
+/* css of home page is started from here */
+.main-section {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    padding-left: 17px;
+    padding-right: 10px;
+    position: fixed;
+    top: 50px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.left-section {
+    width: 300px;
+    height: inherit;
+    z-index: 2;
+    background-color: #121212;
+    border-radius: 10px;
+    position: relative;
+    padding-top: 10px;
+    padding-left: 3px;
+    min-height: 50vh;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.right-section {
+
+    width: 80.6%;
+    height: inherit;
+    background-color: #121212;
+    border-radius: 10px;
+    position: relative;
+    overflow-y: auto;
+    padding-left: 8px;
+    flex: 1;
+    padding-top: 10px;
+}
+
+/* Left section content starts from here */
+
+.lib-content {
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+.lib-div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-left: 8px;
+}
+
+.lib-content a {
+    color: rgb(180 180 180);
+    font-weight: 700;
+    text-decoration: none;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    font-size: 14px;
+    gap: 5px;
+
+}
+
+.lib-img {
+
+    width: 25px;
+    height: 17px;
+}
+
+.lib-content a:hover {
+    color: white;
+    transition: all 0.3s ease, transform 0.3s ease;
+
+
+}
+
+.lib-content a:hover .lib-img {
+
+    filter: brightness(0) invert(1);
+
+
+}
+
+.create-playlist-div {
+    margin-top: 10px;
+    justify-self: center;
+    padding-left: 7px;
+}
+
+.browse-podcast-div {
+    padding-left: 7px;
+
+}
+
+.add-img-span {
+
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    left: -10px;
+    cursor: pointer;
+    transition: all 0.3s ease, transform 0.3s ease;
+}
+
+.add-img-span:hover {
+    background-color: #3f3f3f7a;
+}
+
+.add-img-span:hover .add-img {
+    filter: brightness(0) invert(1);
+}
+
+.add-img-span img {
+    height: 19px;
+}
+
+.clone {
+
+    background-color: #1F1F1F;
+    width: 96%;
+    height: auto;
+    padding-bottom: 20px;
+    margin-top: 14px;
+    border-radius: 8px;
+    padding-top: 14px;
+
+    position: relative;
+    top: 19px;
+    justify-self: center;
+    box-sizing: border-box;
+    padding-left: 13px;
+}
+
+.first-text {
+    font-size: 13px;
+}
+
+.second-text {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.lib-button {
+    background-color: white;
+    height: 26px;
+    width: 97px;
+    color: black;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8.4pt;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 1px;
+    margin-top: 12px;
+    transition: all 0.3s ease-in, transform 0.3s ease;
+}
+
+.lib-button:hover {
+    transform: scale(1.08);
+
+}
+
+.lib-button:hover {
+    font-weight: 900;
+
+}
+
+.footer {
+    display: flex;
+    font-size: 10px;
+    gap: 12px;
+    padding: 5px;
+    margin: 5px;
+    bottom: 43px;
+    flex-wrap: wrap;
+    position: absolute;
+}
+
+.footer * {
+    flex-wrap: wrap;
+    width: fit-content;
+}
+
+.footer a {
+    color: #969696;
+    text-decoration: none;
+}
+
+.cookies-parent {
+    width: 100%;
+    display: inline-block;
+}
+
+.cookies-div {
+    bottom: 34px;
+}
+
+.cookies-div a {
+    font-size: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.cookies-div a:hover {
+    font-size: 10px;
+    text-decoration: underline;
+}
+
+.lang-button {
+    position: absolute;
+    bottom: 15px;
+    padding-left: 5px;
+}
+
+.lang-button button {
+    width: 70px;
+    height: 25px;
+    background-color: transparent;
+    border-radius: 12px;
+    border: 1px solid rgb(192, 192, 192);
+    outline: none;
+    display: flex;
+    font-size: 12px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    gap: 3px;
+    cursor: pointer;
+}
+
+.lang-button button img {
+    width: 15px;
+    height: 21px;
+}
+
+.lang-button button:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in, transform 0.6s ease;
+    border: 1px solid white;
+}
+
+.lang-button:focus {
+    border: none;
+    outline: none;
+}
+
+/* Right section is started from here  */
+.P-artist-h {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 17px;
+    padding-left: 5px;
+}
+
+.P-artist-h>div {
+    font-size: 11px;
+    text-decoration: none;
+    color: rgb(180 180 180);
+    padding-top: 5px;
+}
+
+.P-artist-h>a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.P-artist-h>h4 {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.P-artist-h>h4:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.card-container {
+    height: 248px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.P-album-h {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 17px;
+    border: 1px soldi red;
+    margin-top: 15px;
+    padding-left: 9px;
+}
+
+.P-album-h>div {
+    font-size: 11px;
+    text-decoration: none;
+    color: rgb(180 180 180);
+    padding-top: 5px;
+}
+
+.P-album-h a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.P-album-h>h4 {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.P-album-h>h4:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.card {
+    width: 190px;
+    height: 215px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 8px;
+    border-radius: 5px;
+}
+
+.card:hover {
+    background-color: #1F1F1F;
+}
+
+.card:hover .card-img-div {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.card:hover .play-green {
+    display: flex;
+}
+
+.card-img-div {
+    width: 154px;
+    height: 69%;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.card-img-div img {
+    /* object-position: center; */
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
+
+.card-heading-div {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    height: fit-content;
+    padding-left: 6px;
+    padding-top: 1px;
+}
+
+.artist-Name-a {
+    text-decoration: none;
+    color: white;
+}
+
+.play-green {
+    background-color: #1ed760;
+    width: 37px;
+    height: 35px;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    bottom: 11px;
+    right: 2px;
+    position: absolute;
+}
+
+.play-green img {
+    width: 22px;
+}
+
+.artist-Name {
+    font-weight: 500;
+    font-size: 12px;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+}
+
+/* album container is started from here */
+.album-container {
+    height: 255px;
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.album-card {
+    width: 190px;
+    height: 234px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 17px;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.album-card-img-div {
+    width: 164px;
+    height: 163px;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.album-heading-div {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    height: fit-content;
+    padding-top: 1px;
+}
+
+.album-card:hover {
+    background-color: #1F1F1F;
+}
+
+.album-card:hover .album-card-img-div {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.play-green:hover {
+
+    background-color: #3BE276;
+    scale: 1.05;
+}
+
+.album-card:hover .play-green {
+    display: flex;
+}
+
+.p-album {
+    bottom: 5px;
+    right: 6px;
+}
+
+/* playbar starts from here  */
+.play-bar-div {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    border: 1px solid #07000862;
+    /* background-color: green; */
+    background-color: black;
+    left: 0;
+    height: 70px;
+    justify-content: center;
+    display: none;
+    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.6s ease-in-out;
+    align-content: center;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    z-index: 610;
+}
+
+.pause-btn {
+    height: 20px;
+}
+
+.play-bar-child {
+    gap: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+    top: 35px;
+
+}
+
+.previous-next {
+    height: 15px;
+}
+
+.play-btn {
+    height: 18px;
+    filter: invert(0);
+}
+
+.pause-btn {
+    height: 19px;
+    filter: invert(0);
+
+}
+
+.play-div {
+    background: white;
+    border-radius: 50%;
+    height: 31px;
+    width: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-div:hover {
+    scale: 1.1;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.p-n-div:hover {
+    filter: brightness(0) invert(1);
+    scale: 1.1;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* the song card which is at the left section started form here */
+.songs-card {
+    margin-top: -10px;
+    height: 74%;
+
+}
+
+.songs-card ul {
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.songs-card ul::-webkit-scrollbar {
+    display: none;
+}
+
+.songs-card ul li {
+    list-style-type: none;
+    border: 1px solid white;
+    margin-top: 10px;
+    min-height: 25px;
+    width: 83%;
+    margin: 5px 0;
+    box-sizing: content-box;
+    font-size: 13px;
+    transition: all 0.7s ease;
+    background-color: black;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.4s ease-in-out;
+}
+
+.play {
+    z-index: 10;
+}
+
+.songs-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 7px;
+    position: relative;
+    width: 100%;
+}
+
+.songs-details .play {
+    height: 19px;
+    width: 18px;
+
+}
+
+.songs-details>span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.songs-details>span>div {
+    width: fit-content;
+}
+
+.circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: blue;
+    position: relative;
+    left: 0%;
+    transition: all 0.2s ease;
+}
+
+.songs-details-div>span>img {
+    height: 50px;
+    width: 40px;
+}
+
+.li_img {
+    height: 20px;
+}
+
+.songs-details-child {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-closer {
+    width: 100vw;
+    height: 100vh;
+    background-color: red;
+    transition: all 500ms ease;
+    position: absolute;
+    z-index: 1;
+    display: none;
+    background-color: rgb(0 0 0 / 40%);
+    filter: blur(1px);
+}
+
+.range-volume-div {
+    width: 100%;
+    position: absolute;
+    height: fit-content;
+    justify-content: flex-end;
+    display: flex;
+    bottom: 36px;
+    display: flex;
+    z-index: 3;
+    padding-right: 34px;
+}
+
+.range-volume-child-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    top: -19px;
+}
+
+.song-duration {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    align-items: center;
+    gap: 16px;
+    align-items: center;
+    top: 23px;
+    z-index: -10;
+    font-size: 13px;
+    color: #a3a3a3;
+    height: 32px;
+}
+
+#song-name-info {
+    display: block;
+    width: inherit;
+    position: absolute;
+    padding-left: 76px;
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+.song-bar {
+    height: 6px;
+    width: 65%;
+    background-color: white;
+    position: relative;
+    bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    top: 0px;
+}
+
+.no-song-div {
+    justify-content: center;
+    align-items: center;
+    border: 1px solid blue;
+    padding: 10px;
+    width: 95%;
+    font-size: 14px;
+    transition: all 0.5s ease;
+}

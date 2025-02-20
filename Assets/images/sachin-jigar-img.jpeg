@@ -1,0 +1,889 @@
+console.log("Script.Js is Running...");
+
+
+
+let songs;
+
+
+let play_of_li = document.querySelector(".play_of_li")
+
+
+//Getting Songs from Local Server 
+async function GetSongs(Album_name) { // fetching songs form flies or local host 
+
+
+
+    let fs = await fetch(`/Assets/Songs/${Album_name}/`)
+    let SongsHtml = await fs.text()
+
+    // console.log("Fetched HTML:", SongsHtml);
+    // console.log(`/Assets/Songs/${Album_name}/`);
+
+    let div = document.createElement("div");
+    div.innerHTML = SongsHtml;
+    let anchorTags = div.getElementsByTagName("a")
+    songs = []
+
+    for (let index = 0; index < anchorTags.length; index++) {
+        const element = anchorTags[index];
+        if (element.href.endsWith(".mp3"))
+            songs.push(element.href.split(`Assets/Songs/${Album_name}/`)[1]);// pushing all songs into sogns array
+
+    }
+
+    return songs;
+
+
+
+
+}
+
+// --------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+let currentSong = new Audio() //glocal variable of function playmusic
+
+// On click on li, the html of if goes to the function playmusic then with editing the url  we get the song url 
+const playmusic = (Album_Name, track) => {
+    let album_link = Album_Name.replaceAll(" ", "%20").trim()
+    // console.log(album_link);
+    currentSong.src = `Assets/Songs/${album_link}/` + track + ".mp3"
+
+    // console.log(currentSong.src);
+
+
+
+    currentSong.addEventListener("ended", function () {
+
+        document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg";
+        document.querySelectorAll(".span_of_play img").forEach(element => {
+            element.src = "Assets/images/play-btn.svg"
+
+        });
+
+        // .style.display = "none"
+    });
+    // if(!pause){
+
+    //     currentSong.play()
+    //     play.src = "Assets/images/pause-btn.svg"
+    // }
+    // let play_of_li = document.querySelector(".play_of_li")
+    // 
+
+    currentSong.play();
+    play.src = "Assets/images/pause-btn.svg" // it changes the play to pause 
+
+
+
+
+
+    // time updating and pushing the live duration into play bar
+
+    currentSong.addEventListener("timeupdate", () => {
+        let currentSeconds = currentSong.currentTime
+        let currentMinutes = (currentSeconds / 60).toFixed(2)   //!
+        let durationSeconds = currentSong.duration;
+        const durationMinutes = (durationSeconds / 60).toFixed(2);
+        //pushing song name's into the play bar part
+        document.querySelector(".current-time").innerHTML = `${currentMinutes.replace(".", ":")}`
+        document.querySelector(".duration").innerHTML = `${durationMinutes.replace(".", ":")}`
+
+        document.querySelector(".circle").style.left = (currentMinutes / durationMinutes) * 100 + "%"
+
+
+
+        // console.log(currentMinutes,durationMinutes);
+
+        // let speaker = document.querySelector(".speaker-full-img")
+
+        range.addEventListener("input", () => {
+            let volume_img = document.querySelector(".speaker-full-img")
+
+            if (range.value == 0) {
+                volume_img.src = "Assets/images/volume_zero.svg"
+            }
+            else {
+                volume_img.src = "Assets/images/volume_up.svg"
+            }
+            currentSong.volume = range.value
+
+        })
+        // Song bar
+
+
+
+        const song_bar = document.querySelector(".song-bar");
+
+        song_bar.addEventListener("click", (e) => {
+            const rect = song_bar.getBoundingClientRect(); // Get element size & position
+            const offsetX = e.clientX - rect.left; // Get X position relative to song-bar
+            const percentageDecimal = (offsetX / rect.width) * 100; // Normalize to 0-100%
+            let percentage = Math.floor(percentageDecimal)
+
+            document.querySelector(".circle").style.left = percentage + "%"
+
+            // currentMinutes = 
+
+            newTime = (percentageDecimal / 100) * currentSong.duration
+            console.log(newTime);
+            currentSong.currentTime = newTime
+
+
+
+
+        });
+
+    })
+
+
+
+
+
+
+
+
+    const song_bar = document.querySelector(".song-bar");
+    const circle = document.querySelector(".circle");
+    let isDragging = false;
+    
+    // Mouse Events
+    circle.addEventListener("mousedown", (e) => startDragging(e));
+    document.addEventListener("mouseup", stopDragging);
+    
+    // Touch Events
+    circle.addEventListener("touchstart", (e) => startDragging(e.touches[0]), { passive: false });
+    document.addEventListener("touchend", stopDragging);
+    
+    function startDragging(e) {
+        isDragging = true;
+    
+        // Add event listeners only when dragging starts
+        song_bar.addEventListener("mousemove", handleDragging);
+        song_bar.addEventListener("touchmove", (e) => handleDragging(e.touches[0]), { passive: false });
+    }
+    
+    function handleDragging(e) {
+        if (!isDragging) return; // Stop if not dragging
+    
+        let clientX = e.clientX || e.touches?.[0]?.clientX; // Works for both mouse & touch
+        if (!clientX) return;
+    
+        const rect = song_bar.getBoundingClientRect(); 
+        let offsetX = clientX - rect.left; // X position relative to song-bar
+    
+        // Prevent out-of-bounds movement
+        offsetX = Math.max(0, Math.min(offsetX, rect.width));
+    
+        // Convert position to percentage
+        const percentage = (offsetX / rect.width) * 100;
+    
+        // Move the circle and progress bar
+        circle.style.left = percentage + "%";
+    
+        // Update song time
+        currentSong.currentTime = (percentage / 100) * currentSong.duration;
+    }
+    
+    function stopDragging() {
+        isDragging = false;
+    
+        // Remove event listeners when dragging stops
+        song_bar.removeEventListener("mousemove", handleDragging);
+        song_bar.removeEventListener("touchmove", handleDragging);
+    }
+}    
+
+
+
+
+
+
+// --------------------------------------------------------------------------------
+
+async function getAlbum() {
+    let a = await fetch("Assets/Songs/")
+    let b = await a.text()
+    // console.log(b);
+    let div = document.createElement("div")
+    div.innerHTML = b
+    let anchor = div.getElementsByTagName("a")
+    let folder = []
+    for (let index = 0; index < anchor.length; index++) {
+        const element = anchor[index];
+        let folderName = element.href.split("Assets/Songs/")[1]
+        if (folderName) {
+
+            folder.push(folderName.replaceAll("%20", " "))
+        }
+    }
+    // console.log(folder);
+
+    return folder
+}
+
+
+
+
+
+
+
+
+
+
+
+// async main function for all callbacks of funcitons and some code 
+async function main() {
+
+    let folder = await getAlbum()
+
+
+
+
+    for (let index = 0; index < folder.length; index++) {
+        const element = folder[index];
+        let jsn = await fetch(`Assets/Songs/${element}/info.json`)
+        let jsnFile = await jsn.json()
+
+
+
+        let cardHtml = ` <div class="album-card">
+                             <div class = album-card-child>
+                            <div style="background-image: url('Assets/Songs/${element}/cover.jpeg');" class="album-card-img-div">
+                                <div class="play-green p-album">
+                                    <img src="Assets/images/play-solid-sharp.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="album-heading-div ">
+        
+                                    <h5 class="artist-Name artist-Name-Album">${jsnFile.title}</h5>
+        
+                                <h6 class="weight-1">${jsnFile.Singer}</h6>
+                            </div>
+                            </div>
+                        </div>`;
+
+        document.querySelector(".album-container").innerHTML += cardHtml
+
+
+
+
+    }
+    document.querySelectorAll(".album-container div").forEach(card => {
+        card.addEventListener("click", async () => {
+
+
+
+            // document.querySelector(".singer").innerHTML = album_singer.innerHTML
+            currentSong.pause()
+            if (window.matchMedia("(max-width: 770px)").matches) {
+                document.querySelector(".left-closer").style.display = "block"
+                document.querySelector(".footer").style.display = "none"
+            }
+
+            // document.querySelector(".left-closer").style.display = "block"
+            play_btn.src = "Assets/images/play-solid-sharp.svg"
+            const menuImg = document.querySelector(".main-logo-div");
+
+
+
+
+
+
+
+            let logoDiv1 = document.querySelector(".main-logo-div");
+            logoDiv1.style.backgroundImage = 'url("Assets/images/close-img.svg")';
+
+
+            // window.addEventListener("load", updateBackgroundImage); 
+            // window.addEventListener("resize", updateBackgroundImage);
+            document.querySelector(".left-section").style.left = "0"
+
+
+
+
+
+
+
+
+
+            // document.querySelector(".left-section").style.left = "0";
+            document.querySelector(".create-playlist-div").style.display = "none"
+            document.querySelector(".browse-podcast-div").style.display = "none"
+            // document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg"
+            let albumCard = card.querySelector(".artist-Name-Album");
+
+            if (albumCard) {  // Check if the element exists
+                let album_t = albumCard.innerHTML
+                // console.log(encodeURIComponent(album_t));
+
+                let songs = await GetSongs(album_t.replaceAll(" ", "%20"));
+                let SongsCardUL = document.querySelector(".songs-card").getElementsByTagName("ul")[0] // Selecting the songs card and inner ul for pushing all li's into ul
+                SongsCardUL.innerHTML = ""; // cler the prevous songs
+
+                for (let index = 0; index < songs.length; index++) {
+                    const element = songs[index];// Song1 = songs[1]
+
+
+
+                    let parasedSong = element.replaceAll("%20", " ").replaceAll("%2C", ",").replaceAll(".mp3", "")
+                    SongsCardUL.innerHTML += ` <li>
+            <div class="songs-details">
+                <div class = songs-details-child><img class= "li_img" src="Assets/images/${album_t.replace(" ", "%20") + ".jpeg"}" alt=""><div class = "song-info-div">${parasedSong} </div></div>
+                <span class = "span_of_play"><img class="play  play_of_li" src="Assets/images/play-btn.svg" alt=""></span>
+            </div>
+           </li>`
+
+                }
+                Array.from(document.querySelector(".songs-card").getElementsByTagName("li")).forEach(e => {
+
+
+                    e.addEventListener("click", () => {
+
+                        document.querySelector(".play-bar-div").style.display = "flex";
+                        // document.querySelector(".footer").style.display = "none"
+                        e.style.border = "1px solid blue"
+                        document.querySelector("#song-name-info").innerHTML = e.querySelector(".song-info-div").innerHTML
+                        // console.log(document.querySelector("#song-name-info").innerHTML = e.querySelector(".song-info-div").innerHTML);
+
+                        // e.style.backgroundColor = "grey";
+                        // e.style.color = "b";
+
+
+
+
+
+                        let playIcon = e.querySelector(".play_of_li");
+
+                        // If the clicked song is already playing, pause it
+                        if (playIcon.src.endsWith("pause-white-for-li.svg")) {
+                            currentSong.pause();
+                            playIcon.src = "Assets/images/play-btn.svg";
+                            document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg"
+                        } else {
+                            // First, reset all other songs
+                            document.querySelectorAll(".songs-card li").forEach(li => {
+                                li.style.border = "1px solid white";
+                                li.querySelector(".play_of_li").src = "Assets/images/play-btn.svg";
+                            });
+
+                            // Then, play the selected song and update its icon
+                            playmusic(album_t, e.querySelector(".song-info-div").innerHTML.trim());
+                            playIcon.src = "Assets/images/pause-white-for-li.svg";
+                            e.style.border = "1px solid blue";
+                        }
+
+
+
+                        // previous next buttons 
+
+                        // let previous = document.getElementById("previous")
+                        // previous.addEventListener("click", () => {
+                        //     let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+                        //     // console.log(index);
+                        //     // console.log(songs[index-1]);
+                        //     // previousbro
+
+
+
+
+
+
+
+                        //         let previous_song = songs[index-1].replace(".mp3","")
+                        //         document.querySelector("#song-name-info").innerHTML = previous_song.replaceAll("%20", " ")
+                        //         playmusic(album_t,previous_song)
+                        //        let playBar_infoText  = document.querySelector("#song-name-info").innerHTML 
+                        //        let li_innerText=  e.querySelector(".song-info-div").innerHTML
+
+                        //      console.log(playBar_infoText, "li : " ,li_innerText);
+
+
+
+
+                        // })
+                        // let next = document.getElementById("next")
+                        // next.addEventListener("click", () => {
+                        //     let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+                        //     let previous_song = songs[index+1].replace(".mp3","")
+                        //     document.querySelector("#song-name-info").innerHTML = previous_song.replaceAll("%20", " ")
+                        //     playmusic(album_t,previous_song)
+
+
+
+
+                        // })
+
+
+
+
+
+
+
+
+                        const songItems = Array.from(document.querySelector(".songs-card").getElementsByTagName("li"));
+                        // Function to highlight the current playing song
+
+                        function SongStyles() {
+                            let currentSongName = document.querySelector("#song-name-info").innerHTML.trim();
+
+                            songItems.forEach(song => {
+                                let songName = song.querySelector(".song-info-div").innerHTML.trim();
+                                let playIcon = song.querySelector(".play_of_li");
+
+
+                                if (songName === currentSongName) {
+                                    song.style.border = "1px solid blue";
+                                    playIcon.src = "Assets/images/pause-white-for-li.svg"; // Change icon
+
+                                } else {
+                                    song.style.border = "1px solid white"; // Reset border to white all
+                                    playIcon.src = "Assets/images/play-btn.svg";
+                                }
+                            });
+                        }
+
+                        // Previous Button
+                        document.getElementById("previous").addEventListener("click", () => {
+                            let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+
+
+                            let previous_song = songs[index - 1].replace(".mp3", "");
+                            document.querySelector("#song-name-info").innerHTML = previous_song.replaceAll("%20", " ");
+                            playmusic(album_t, previous_song);
+
+                            SongStyles();
+
+                        });
+
+                        // Next Button
+                        document.getElementById("next").addEventListener("click", () => {
+                            let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+
+
+                            let next_song = songs[index + 1].replace(".mp3", "");
+                            document.querySelector("#song-name-info").innerHTML = next_song.replaceAll("%20", " ");
+                            playmusic(album_t, next_song);
+
+                            SongStyles();
+                        });
+
+
+
+
+
+
+
+
+
+                        // let play_of_li = document.querySelector(".play_of_li")
+                        // play_of_li.src = "Assets/images/pause-white-for-li.svg"
+
+
+
+
+
+
+
+
+                        // Add border to the clicked song
+                        e.style.border = "1px solid blue";
+
+
+                        // e.querySelector(".play_of_li").src = "Assets/images/pause-white-for-li.svg";
+
+
+
+                    })
+
+                    // let play_btn = document.querySelector(".play-btn")
+
+
+
+                })
+                // -------
+
+
+
+
+
+
+
+
+
+
+            }
+            else {
+                console.warn("No element ");
+            }
+        });
+    });
+
+
+
+
+    document.querySelector(".cookies-div").innerHTML = "Cookies"
+
+    // All songs are into now songs variable
+
+
+
+
+
+
+
+
+
+
+
+    // ---------------------------------------------------------------------------
+
+
+
+
+
+
+
+    // pushing Songs info and duration when click on song
+
+
+
+
+
+
+    // speaker
+    let speaker = document.querySelector(".speaker-full-img")
+    speaker.addEventListener("click", () => {
+
+        if (speaker.src.endsWith("volume_up.svg")) {
+            speaker.src = "Assets/images/volume_zero.svg"
+
+            range.value = 0;
+            currentSong.volume = range.value
+        }
+        else if (speaker.src.endsWith("volume_zero.svg")) {
+            speaker.src = "Assets/images/volume_up.svg"
+            range.value = 100;
+            currentSong.volume = range.value
+        }
+        console.log(speaker);
+
+    })
+
+
+
+
+
+
+
+
+    // --------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+    //  event listener for play, pause, next , previous
+
+
+    let play_btn = document.querySelector(".play-btn")
+
+
+
+    play_btn.addEventListener("click", () => {
+
+        let currentSongName = document.querySelector("#song-name-info").innerHTML.trim()
+
+
+        const songItems = Array.from(document.querySelector(".songs-card").getElementsByTagName("li"));
+
+        if (play_btn.src.endsWith("play-solid-sharp.svg")) {
+
+            // document.querySelectorAll(".songs-card li").forEach(song => {
+            songItems.forEach(song => {
+
+                let songName = song.querySelector(".song-info-div").innerHTML.trim();
+
+                let playIcon = song.querySelector(".play_of_li");
+
+                if (currentSongName === songName) {
+                    // song.style.border = "1px solid blue"; 
+                    playIcon.src = "Assets/images/pause-white-for-li.svg"; // Change icon
+
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+        if (currentSong.paused) {
+            currentSong.play()
+
+            // play_btn.src = "Assets/images/pause-btn.svg"
+
+            Array.from(document.querySelector(".songs-card").getElementsByTagName("li")).forEach(ele => {
+
+                ele.querySelectorAll(".play_of_li").forEach(img => {
+                    // ele.img.src = "Assets/images/pause-white-for-li.svg"
+                    play_btn.src = "Assets/images/pause-btn.svg"
+
+
+
+                })
+
+
+
+
+
+            })
+
+
+
+
+
+
+        }
+        else {
+            currentSong.pause()
+
+
+
+            Array.from(document.querySelector(".songs-card").getElementsByTagName("li")).forEach(element => {
+
+                element.querySelectorAll(".play_of_li").forEach(img => {
+                    img.src = "Assets/images/play-btn.svg"
+                    play_btn.src = "Assets/images/play-solid-sharp.svg"
+
+
+
+
+                })
+
+            })
+
+
+
+
+
+
+
+        }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let show_me_div = document.querySelector(".P-artist-h div")
+    let card_container = document.querySelector(".card-container")
+    show_me_div.addEventListener("click", () => {
+        if (show_me_div.innerHTML === "Show all") {
+            card_container.style.height = "fit-content"
+            show_me_div.innerHTML = "Hide all"
+        }
+        else if (show_me_div.innerHTML === "Hide all") {
+
+            card_container.style.height = "238px"
+            show_me_div.innerHTML = "Show all"
+
+        }
+    })
+    let show_me_div2 = document.querySelector(".P-album-h div")
+    let card_container2 = document.querySelector(".album-container")
+    show_me_div2.addEventListener("click", () => {
+        if (show_me_div2.innerHTML === "Show all") {
+            card_container2.style.height = "fit-content"
+            show_me_div2.innerHTML = "Hide all"
+        }
+        else if (show_me_div2.innerHTML === "Hide all") {
+
+            card_container2.style.height = "238px"
+            show_me_div2.innerHTML = "Show all"
+
+        }
+    })
+
+
+
+
+
+
+
+    // menu bar functionality
+    let menu_img = document.querySelector(".main-logo-div")
+    function menu_bar() {
+
+
+
+
+
+        let leftSectionCloser = document.querySelector(".left-closer")
+        menu_img.addEventListener("click", () => {
+
+            const logoDiv = document.querySelector(".main-logo-div");
+            const bgImage = getComputedStyle(logoDiv).backgroundImage;
+            let bgImage_parsedLink = bgImage.replaceAll('"', "").replaceAll(")", "")
+            //    console.log(bgImage_parsedLink);
+
+
+            if (bgImage_parsedLink.endsWith("menu-bar.svg")) {
+
+
+                menu_img.style.backgroundImage = 'url("Assets/images/close-img.svg")';
+                document.querySelector(".left-section").style.left = "6px"
+                document.querySelector(".left-section").style.display = "inline-block"
+                if (window.matchMedia("(max-width: 770px)").matches) {
+                    document.querySelector(".left-closer").style.display = "block"
+                } else {
+
+                }
+
+
+
+
+
+            }
+
+            else if (bgImage_parsedLink.endsWith("close-img.svg")) {
+
+                menu_img.style.backgroundImage = 'url("Assets/images/menu-bar.svg")';
+                document.querySelector(".left-section").style.left = "-98%"
+                if (window.matchMedia("(max-width: 770px)").matches) {
+                    document.querySelector(".left-closer").style.display = "none"
+                }
+
+                // document.querySelector(".left-closer").style.display = "none"
+            }
+
+
+
+        })
+
+
+
+
+
+    }
+
+
+
+
+    //left section closer
+    let left_closer = document.querySelector(".left-closer")
+    left_closer.addEventListener("click", () => {
+        document.querySelector(".left-section").style.left = "-98%";
+        left_closer.style.display = "none"
+        menu_img.style.backgroundImage = 'url("Assets/images/menu-bar.svg")';
+
+    })
+    menu_bar()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+main()                                                                                                                                                                                                                                                                                                                                                 “€äÖŞÿ s¾tä/u¶ˆ(†—9ëé«óOÂ²T$e—ºçqqÇÈniÖ2Â»ĞÓsEss^Ÿîhë$Ój¬Ü_Ÿ	¾ÊëòfyşöP·ƒ”Œæm›>‚Ä9¤X‹ˆ¶#æ?‰Í/+Üôcäèì³µc6“|0ôÁ¶
+ c|T&ãªÁò¸#F}±*%âf¹á
+Äù ¤ÿ ,£<¸â‘lÄ.`8a˜~&V‚Çqç«Õn=1«±hÔmŠLI/=ş˜ *.˜íOÍÑ)†zwCñØá‰ÙNë•á¹âÖÄ^¦kz'0Ò==T@’66éŠ4PÑXb“˜û?r(Øê:`7ğ$7á‡¨ÅÑ¯X®+´[Abš9ºç[‹üq+Ñp=UÁA¤× 1šgÊØš«ñ)Rr¦’Şç‚”òEğ²¯Ö›IĞhFÑ	ùVÈ¿¦ç*P@ÚšÅƒL‘ÓCÿ Ûˆ?<AÊ<ó©r³ë”²4uÚ7ŠgjZ„¨J/ä _ˆ‘Ó~½2ÿ ÙñåÇÈè}XÃy—o—„uŒMÛÜ•zŒõT3R­©JGâè‹ñ<d$mqµï¶fà„¡ò—Fíöæ9G×ºõäv–ŸE§Ü
+ã¸¾s{š÷İçæ?íB/ÅÕi°JØ´Íñp á»[çş/ˆüd÷ìïx¬~æ Zü°õZG0éôğOzj¹øUA&x—p¤€>Vß:-Ï|† o^ı^›1;\yb5i”æ®¦K WŠÀ)õ=ùç×Æ/£ç¦ÓºÇNZ@‘£´»’/nñĞ‘¶CÈA&†½ù’‚¦G²ô†Ç‰Nûû€õèp 5#Cî¶bÿ ˆ…gQÂ¶$lò)±_òÄˆª$,¨ÒÖ­dJ…n%’Ê	^ïÊ?ç—ª[¯EÅ”ÓK0âee+;‹ùäjù :.PØÓf§yxˆ@8CƒÓØÃøãekH6?=Ö9SK¬Ôµ=<Eš¨˜W‰îI}­o‹f¦Ûã 0D}]K r&ÉšzĞ
+é!pxŠ¥CÔ5¼¯ÖŞ¹µw©{ØÇˆâÇÜñ‰5Nª*¼Yh)§©„%¸x‚†İGºÛ#’öúÎØ›ÙÖ"æÎÏ«&¬åŞi¦¨-"
+Ç¨;ŞD~Ü®FÌ~WİãO]aôkA|Á$JH>7Ç4ü)?µô,i“Ğº~-óºil)ÅDe¶ÁT%şx"[5ğQUÆ®|z`‰‹à	†öÁu•Qiš”òÊªRKîv \­ºüòîı“L½{‚Ü9"ŸÆI¸k¹7r‡«Ò¸T”#so<EÍÅ ]·¶×ğ··n»b©ÑMÔiµ}2`8JÊªO¡Ûùâ ‡ªãk† ùãW¥ºÜÜõ¡G¦5‘xd—×T[‘4İM‹ø
+¯æ¢Ø·ê´Ä)1ò¡bÑM$k}¸Nx¾–šD³;8	Ä*¨Ú¾¿C£F_P¬Š˜w#5İ¾
+7?lXÆSèÊq‡R±5¾×KÇ£ÑXıŠİ¬<Äcù‘ğÉÛøË
+{®Ğ
+¯d|ëu|°ëk%d¢¥'Y£uâ'£Õ}ŒªEÍ¬NFŞ@ã‡BÊÙÎ99F ¬íkR‚8u©+ê…^¹,’EÄü\EÉñ&÷\ w%üÊ…hæKKåÕ™9W‚U§'ˆñÅm€¸µ¾÷ÎC8'1c]È1?hÓ¬üßCJPJL%æÊKz}öÛ|êüDxâ”îµş^¯ÃÌÉ>‚š¿9p‡2H+bTÈ rÖ ®ÌTª°6=ã~û]ìd6™&4ĞĞ*úıë«Ğùœw³”ãÔ_§¥]&¼\LUKYG7Ï=›çùJ¿şÛ„ÂYø¸Asº0|Gé•J4t-9µiú€XÃ{ áwâ±âÙ·|Æ2&õY’Ñ:(Óuâ îIâCmºwïë×ªÎš­]~d‚t‰a(Ykì?˜9n0N¶¾ IV|HÚÙJ°’êîI`8›`;û®r½A†””$xÕÈ¤ÿ ¸¢»¯D”Í‘µŞo†ª«N£¦HY•?xÜb¾ÆÃny«´Œc!)tt6û<›€gŒhè.Åk5~Ìô=f-rYëôíQš
+mr©dZ™£Š6§7*¿÷<E	%œ\Œ'‹(¸-Ë‹>'aÃ<­AøÎk£ijd¯P‘£Ô¿xCÉ„ñ./oÌ7··{ï“EQèÁ$ú«™i%éõCO7â!š–¢1O[×c÷Î;1ùİW}DßôİtÎ•¿5ş ĞfÇ†ÿ íŸÿ ’Õ›ILÂ6Îé1TzÍ‚¨­‚‰e·ÁŒEÏ¯‚%H/ˆ9Ss‚9oê×µ;B–>]ÔV ¢¢øZ±¿2ÆÇº08oæ[Ó"f˜üc»‰eí[:½M}PÓ!™ø–Š Çp
+×û÷œÊ(LÙÈåœ4sé=½êÔ+Á_¦Rê	Şğ¹…ÏÈÜ-¨ÿ IeGu!Ô.Jo¨­”
+­?S£ó&ñVşYAÁ0Ü7Pîh{täš”¿õ¡ûf‚D#ÿ nWíÌv^3ã=Ú:Ïj\«_=>»Fî¤0ìv7ïŞ—ØÈĞ®:Ø¹9°æ&¾şÉ/úbp—¢ÿ v­Y{qäôSmLÉÿ øã'ôSŞ‡«F^ßùV+ğÍRÖÿ ñ¨ş-‹íËÑo¿ŒwhÔ}Krõ:3ÅOS9Q²†P[Ó©ÇS+Næµõ«™ƒE§rÌ|M°5UE¿EQürÑ·ú´Kyé›¬v§Í\ÊÍøšõ ‰¿ô4ôğ…½[v?|“V4·%Ş”$ybIcÕ˜İÄÎI:4u}4–¦)DZ&¬tùµ'Bä¤hÓÛ.¶şgå™Û°Gİ‘‡/µÈıAJ´ôä·;ÅRs›- r6è=*¬Á¡Ä€‚ı³ËÈJ#l1ÎÚ¯=×¢3*¬qÒİNÖ
+‡®ä}³²ñxëIú—ªğç‰³İQÒëŸ›´y”SøoSO/‡LX"]—Û¾àùõÜìsCp%-®H›èzÕŸ®KäMí²GèYö¶6aböNâÃçş™æPÖß-»®©'•ÂOŞe=ûï¶:B=˜èØ”¥D.¾‹ubAşíËÛ| \kV€Lj'áR=¸ËxgÜ6ğôû¾8ó!«s^Bu%’şT*ìòèh)|¼Bà¥²
+‘á—½¤gP6ş›7ë”KPŠï%öYÚ»$2ƒM£R*ÍU"qR§¸›uî¹7mŒKä{:ş?h72ë êéXåÊXU)icZzq ˆÖÊ€t
+<³Tïd#qˆÑnv«ÉòkZD°™Yf…¼Xja°dšÆÎ/{?;œ³C|‡e2á\fîæSÙö› Ë­êgM¥Ój Ó¥’§iUAöÇ5”±E!YØ·q  FnÇtrBDiä·{·‹v]¨Qæ_ÃÔF^0ÿ †”1;ğ±_Öİ3ÊywqÈ±ÕÙ?KzOô;˜i­e‚±¡_+oålÜğ€Ì¥ÿ å¯6¤|‹¦w,b›|Tx[ñÁŸUÛâ*ğà‰l{°F´˜#óËë‡‘µ]CµºİEIüRC/ˆÆË•l<îÀænx“+dÃğ¹zš1Ø3‘Cjk7¦„¸"D´ÑÈ}Ñ)õ¶6‚4êh¢Qq,iE>Xt@>XÚD•_Lj#Xo¹ØbÒ&%;LÁWaŞp¤oÓÁ*ûEÛ½<
+U·
+÷ã‚&±#¦
+¤HäƒsˆTJÓá2Ô<„ =ù“»–¢(¬F†hÚÂÆÆ×štm®!š(fQE
+¸á¢3ù€cd3õA¤4`n¥õ-Z¢º4²ÉPî¤1Ä‹ù÷Æ~Î(ß£Ø`Âqâ„‡ej
+Á=$¦xã•ÉàduSÆ}ıíq`ı;²Ü„ñ•A§NÃÔ»YO»€èéÍZ3;E2;!b õ ›‹yg˜Àñ&'³å¸t&$4„.cbœ@~ vê1ä·ÌÑÕTŠíRH	b»Ü ×~áóÈ³ê)ƒ.Ô–ÔbÜ<aUn€ƒ ùã„´µ×¥­íV„¨xØM‡÷½~9dJ¸ÿ ±¡DìÎ$6LÌ.w¸ÿ ã•e­=WeªÓÕš»ÑÄÚ½%)àİnOùP›Ÿ¾jm"e{—²ğq>Ì¤{–^äŠ?#PÖM*„§A'^Û›úæ†£Wt M5¹¶˜O¢Â^XãY§Œ3ÜbÛïğÛ]×«sÏ+iÃIæ“U¨ÃFñi•ŠŠçcxŸ‚ı÷=>c&áŸ/±r<œÃ"äİbuºZ‹øb¶jXt!÷I>Î÷ÌÛ°Ã®éìB—ğg_·äš¥&_šŸ¾t¾\Ó?Oî×•–â{ŒíC46*<'œ,œ^#rÓd;aÑîm‚8ë§ns©ÑiYÌÑã…øT¸_çï™¹å©˜«•A¸#"6¢ùàˆ2z~8*–ÊW¡Ä¥fbFæøÔhÌ \jhB’ãB&Oµ”tïÅ(ôNÀp¢ŠºZv‘cÅŠêö! ^˜õP¾"$98ÒÍ&µîÍ¹^Y‡»—Í|F«3Šp³r;—2Ìõ]"¾ù¶­´^]’¬'	“NŠHÏq/úŸÓ)ÅÜÎ!êWb²F?V(Š(¼’à˜dR?/Ë;¨t¢ú^!eİ«ATúMLô¯#,[ŠÈ­{®Í·P/é|ªqíÔöÖ˜‘'Î3ÑÓZmsÖòæ‘Q:pI$(YTp•b€‘nîñs’Yˆt·€”8e˜>¥=ke‰›ƒt"Æö=àÛüyef †™t¢¬«,%å$$ ¿y,6òá¶C:èÄ#–?Ä±”ÎœB?[„ß‡¥Î<8–Ş<EE?P˜Cb¼%£<]I°ÀGV¨:6ô¹£TW]ä¹P×·»cÃö,1™Vì–:²6…ÌÔ=Ÿök¨jZ†©Vë5N‡JY@•^ëî6,ÆâÖ»³„F zÛØøŒñÛí¹Léz²w3sLº•7-èÕ	INÕÓØÂÜX;€ı†K„CN´óŒ1$—œÁÍ•š0(j-ı+MáªŸ½ªÊl·=m}ñ8*›hË¿Fí´˜µº‰é¨«…dú“ŸÄÊ¯ÅÀœ[ä}£o\¾CÛ‰·™ò;¸Î#©=Z­)—–ôºØÉfŠ¦ZVÛ ~	Rçãâ~¹›açâîŞÆ#¿,‰É¹qßáƒúß:¯rKíıXù%Äs±iN}Š¢o‚©l0Q_'rK·]ñQ"C‚‰ß‚?2>±+V§¶-n4?‰f&ılÿ ñ9•˜ÜˆeÃ a.#¶<&Û÷`ˆX§Sqˆ‰,a?ú‡ç‰¢tIb€Ø88ˆÕ¬	q_s°Æ•b‹…úôÄ
+&	=÷ÁTÈW„íañÇoÆÅ¯Ûˆx·ó8Š£¾×ÁÒ6Î|…öÆd½C²İw³©é¨ù‹O›N’¦%?2LŒ]Xllıàìmœöú91LòWÆb¾-‰)ÂÂ‘•cpOvİ3:›]İ|ó&›»Ù_#¥¼J™„Ô2€/u‰Ø­şaÏÛ™˜5M3”±’bi†ª4šêI–šY
+ø^Ğ €	¿_Ÿ~nâòˆä5·w˜Üâ"$>¨µ¾Q¯¥Š
+¹èËÂGI	¸6±±ãÓ%CÉaÏq:Hy¾à~ğŸâs³º©*yJ\<7ˆ‚,}®Âÿ kg-½ö™˜çsÈK<¥v¹i¥.ÉºÆ{ı×¶Ù
+Q­XÆ¯uB£hxŠ€†Ä®×°ÿ Û#J"íEj¥³JÎŠäX‚@;ßü\º†…•0"­
+Ä¬ó©%Â©¸è{ÿ Ç\h7Ğ5ã—FÖ™:sÆ$Wõ	¿Û+Éz­ÍĞ´y‹F§¨¬¨«XYÔ'på~½ùf‘ Ù†Z Vu/3sªIX³µ}$<&¤ñ)F[À½ì¢Äß6ãŸ‚õt÷.3RÔz-{L×¨(5Ê8é`+©2+»ñ"q`o¸=wïÉC ‘²¶ùÄF Öä\xÕåu`B¿~ÖoåwoFÇBÈKô=r•v€C]a¸ğåá`<Çœ„ÙÕ¨§nvK…É´"ÈŠáA½½£;Ÿ
+Ã3õşÌlt_Ğ¶Ã:v¤ğqQïvğœ,â¨®1¶"ä‰\®æçÛ~dıa<5=²ê51³—Œªtö9ùõÌ¬ß‰™ÂÁı×#¯{¸è?L	âî¶" `÷ûb¢T€ã
+¬Ñôµôá/nÜÑ%~¤ÆŸ”ô‰“ñŒ.¥ÿ 0uÀ»7p>de¸±{’³Ğ4ÎT©}jö¢öEÎº].©¥Ó5èæ›úpÊY”0CşCÆSÒÇºØìøÄêBWÕÎÀ 23jtJv6ÛÓ"q}­|r#Œ§Q=‚âmr®‹'2óN‘¤BI_[*ıù iiõ~µs$èÜñ¡I£kTi[B(ü­F«1úŒÓË‡xpÈ,1c"‡vÃØ>«ÙuAª…äÔù}šÑW÷Cs²JCäzC¶q[ß-¬¹cëşî–,‘˜®êNÿ Ó¹fObÁ-]Q'cfdã|ç·q,l”ISë´8+¦y
+“Àëï^¶ÿ Ê"—Ö”©ĞÒxºt´S"¿‚Z>¹½Ô ËQ(÷j‰Sh¥JH*)Bx8$D¶ÖŞöôÇDT®×bÑÒÖ‘P8om†Ûíş™t¢+V\âVÕD»‚°ánlGòÈDú0ïZhR˜ÙäŸ„°Ü¶ıã¨Ë¤ted4 ¯‡ŠšEŒÄ+’VÄôòî÷e1?&4ÈhƒO¨š˜]¡K¼ˆ?Âÿ s‹0BÈÈİDÌêC'~ßfÄcoüq°[L8ªBHÕ	4b$ˆ¹­¸¶ÿ õeæ"$¶ùŠ “iuzn˜D!F`\ZÇoÓóo‹	d½K\”ZHŠŒkÃgR¤tê
+ÿ 1†PdÍd*zÑ&¿B“ªˆ*ƒSJÇ¯ªÍıIûcñ$Ğ4v¿$S
+XÒà±N€üxEóÒ|(­ >¤ÿ V<Î«ªq›ÁcdTzğàˆ	Áf{I‘ğQ!Ÿ|«_¨Á¥ÑÏYU*ÁKMM,®lq1? !5©N¯ÈÔ9Ğsß>ëZÍ:4t•R=4dÜ¤EøÛsñÌIK‘¶p·c‘ˆ³ñÆ¢g^ŒF*¯H:/"%²1¸ˆÕr	²’ìM€]É>XÒÕÿ §ÎGeòş„ñˆëüÅ×75ûÿ —û9¯Š< fÍ¹—ş$ŸRäFâ<š³ÛÜ[äMÏfÌ}ÜcŞg!ÖÂÙ7Ãæ1Ê¼ñ¬{±-DØçnŠ
+©’ì¸do¦ë}¾rTòÅ^*›ÑbV“ÿ ˆÇb0²gBıFã$šìV­dUÁ,3Æ²Å"ğº8¸aê1“„rDÂ]
+£G,ö¦¢‡µoé±¯ø&™‹kñJìÄ3qO¾ÅìÈã'¡#úS'Büöc·¦ ªÑ7¹Eˆ#lŠ,Ç«`ºĞ¥ø‚—_©‰îuâVé{®7ı;1btÑ2j`ÚìÑDVE’#ˆïefßí„¸Ç_VÈK‰Õçôù¢«R?È>#ù[-æFYœd,.9­î+Çù„—¾ìÌ~ù0­OZsã{@İúl.~ö-å£w>Cì›-Ú&ˆ<l8[?æ£í•rÕ§ì¦éğÎõKÃÄÊÏÀIës·Oíe’”kVTç:ªS3ş
+´¨‡ˆŞ×âU!Mı_×)r4ÆˆJ•MMˆI9FU¹ı ¦Ãî£ï—ÈÊ´o<Gµ1Bô°ÌÌ,ñ²{œ±téÓfŞ˜±&È	¾#ÕIñééØ4“GˆBƒ#÷Ënó¸¶Iã9éÛ5Ã_Ê:®•ªÁG/kLÊeX©¯9	vèÍ­p}¾ äÓ°Şc§ƒË»³ùIêFƒ§Š¸š§ÁQ$.T²›t<$‹ü3Ñüv`ÚÃÅÇ‘²¹éÛlÒZÚ‚=¾
+¾'lS“lk»uÁD¢pG1}zv¢Ü™Ù\<½G?‡¨s¦	Ÿp¥Mä?Ú<+ó9s>1â;¶ã›~sÓÎRE?²Me‚ÉT¤` ·~=?ÊN"ä$HÛÂ0ÕD‰aóÉsñÄ¤e/¥ÏGhı·rı‘xšuŸÔ«.6ğá³?í?üòÌQç:Y3Aú˜\µÉ;Îj±‹ÿ ŞY’¿”¹W[u£ªš’CÜ<E¿sp,İŒöp²Cá/[üƒTÈ¤©f ØcIZŠ%2om±F¨Ü@#N½qİ¨ûq¥ô)¡Rí¢jò·M7K[ù3•Œ~ŒÙ#l.vÕ“£ôœÒc¤Kßlƒ;bä„Óêk¹°Ôªjj!‰[xQáTëî¹'áåœœÙÇ?tje+ş-€ŞŒXÒ&¢ ‚ü@?7pÎ\Q‹*ãÆÃîfèë¨É¸tvBI¿yïøßíŒşz1"oTİS÷2ÑK2´÷Û‰wÄa[£ùÑx7-çEC÷‚£ŠG‘$fŞ6œ\Ÿß¥hÌãAW$x%œÂ®‘ÁbıVÁ	·­”äR@¡l"5¡İ*GÇ†6ıçW»‚Ìş]G¸aÄê{+IK’¶G‚/ßqî›B’?VûœpÆ5Ñ8…Éb–0XÄ¡ÁãkØ…ë–Ê¢ÈœE_Ñ±Î:-
+OBkŒòøÖŠŒÜ7 ïf]0Ç·É"%_Ù® Ø’Ûÿ ¨u…™MÒV7Rd­`Fü"ç»¼ùäÃ‹|åü% E-iŸœ*#ÔVˆéU¸D4g€Ó{nvÛ¯vJÂ6ñ7¯Õ"?Vÿ &ö7¨s;ò¼RFiàÅ#TTÜÜ	8‰ îzf¿0RBÎW_¢q?$\olônŒ%B˜ôÁjfÛjvÁ‚¯A'yk÷àŠ¬0U©%ï‚‰dà úñåhõŞÒ9YêjÚšœèÒğğ§é9-·ö× n"%1lŒgGÔéñÒVºG'6Ãkü²Qnêû‹{`«âl:à‰LÅ…ÏÏ¥^îÚşXİ_ğıäxôÎF×9®ESSªÕşêVw#ÒîÇÿ “öÑĞÉ”ëN®ã6É,uõ	É±öØß5iÅüUS³~ÌÑ~ñşÒ>g)ËP!|MåÌJû¾Ë{W<MŠĞ¼Öµü±ÅWÄƒÓ6ãQØßğÿ ÑÄTœå«8šJj5=öÜÿ É›QÔ´dìxe9=¡.IIÁUÚÌ+QÈÚÊÆÑI¶Çi9¿=-ÄuÑ:¹3RV:Œ,‘|E¯}…Æyôt¬²+7¹¥ÖJ4â_²“Üxß|Œùú0Àhs–='R…Š“Ô ÿ ìrì$WD‹[gµ1ªÚ*E©–Em™€w“é“ÎØÕÉšgÕ¥Û\¢.¦¼á"àeyøC~ktŞı1!³«UËZ‹¶İWYÔI††šXìê_ø~¹6[B=WQªnVó×1ÉOûºØáG?–8Vë±Ø}¬r˜`Åz… Ù{¤Pê¼å:>§]<Ğãc$·¸â$ÙzÁîïÆÎPÁø«N]6—G£Ó"R@‘7ØlwÈÆr™ùF3ËEHj'î£@	QÄ=xX< Ã½±Ì[MÒ+9¦›ÆEtÆP_ç—ãa Ñ¹
+æZmBOÌd0F èJµ‡ÙNjøª;Ìq>¬c¤K3À×¶z`èÇTiŸ|TUéŸ¦*­ÄkŒL^‚-‚!&Ø#ÿÙ
