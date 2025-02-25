@@ -1,4 +1,4 @@
-console.log("Script.Js is Running...");
+console.log("Padhle bhai !");
 
 
 
@@ -13,11 +13,11 @@ async function GetSongs(Album_name) { // fetching songs form flies or local host
 
 
 
-    let fs = await fetch(`/Assets/Songs/${Album_name}/`)
+    let fs = await fetch(`/public/Assets/Songs/${Album_name}/`)
     let SongsHtml = await fs.text()
 
     // console.log("Fetched HTML:", SongsHtml);
-    // console.log(`/Assets/Songs/${Album_name}/`);
+    // console.log(`/public/Assets/Songs/${Album_name}/`);
 
     let div = document.createElement("div");
     div.innerHTML = SongsHtml;
@@ -27,7 +27,7 @@ async function GetSongs(Album_name) { // fetching songs form flies or local host
     for (let index = 0; index < anchorTags.length; index++) {
         const element = anchorTags[index];
         if (element.href.endsWith(".mp3"))
-            songs.push(element.href.split(`Assets/Songs/${Album_name}/`)[1]);// pushing all songs into sogns array
+            songs.push(element.href.split(`public/Assets/Songs/${Album_name}/`)[1]);// pushing all songs into sogns array
 
     }
 
@@ -58,7 +58,7 @@ let currentSong = new Audio() //glocal variable of function playmusic
 const playmusic = (Album_Name, track) => {
     let album_link = Album_Name.replaceAll(" ", "%20").trim()
     // console.log(album_link);
-    currentSong.src = `Assets/Songs/${album_link}/` + track + ".mp3"
+    currentSong.src = `public/Assets/Songs/${album_link}/` + track + ".mp3"
 
     // console.log(currentSong.src);
 
@@ -66,9 +66,9 @@ const playmusic = (Album_Name, track) => {
 
     currentSong.addEventListener("ended", function () {
 
-        document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg";
+        document.querySelector(".play-btn").src = "public/Assets/images/play-solid-sharp.svg";
         document.querySelectorAll(".span_of_play img").forEach(element => {
-            element.src = "Assets/images/play-btn.svg"
+            element.src = "public/Assets/images/play-btn.svg"
 
         });
 
@@ -77,13 +77,13 @@ const playmusic = (Album_Name, track) => {
     // if(!pause){
 
     //     currentSong.play()
-    //     play.src = "Assets/images/pause-btn.svg"
+    //     play.src = "public/Assets/images/pause-btn.svg"
     // }
     // let play_of_li = document.querySelector(".play_of_li")
     // 
 
     currentSong.play();
-    play.src = "Assets/images/pause-btn.svg" // it changes the play to pause 
+    play.src = "public/Assets/images/pause-btn.svg" // it changes the play to pause 
 
 
 
@@ -112,10 +112,10 @@ const playmusic = (Album_Name, track) => {
             let volume_img = document.querySelector(".speaker-full-img")
 
             if (range.value == 0) {
-                volume_img.src = "Assets/images/volume_zero.svg"
+                volume_img.src = "public/Assets/images/volume_zero.svg"
             }
             else {
-                volume_img.src = "Assets/images/volume_up.svg"
+                volume_img.src = "public/Assets/images/volume_up.svg"
             }
             currentSong.volume = range.value
 
@@ -213,7 +213,7 @@ const playmusic = (Album_Name, track) => {
 // --------------------------------------------------------------------------------
 
 async function getAlbum() {
-    let a = await fetch("Assets/Songs/")
+    let a = await fetch("public/Assets/Songs/")
     let b = await a.text()
     // console.log(b);
     let div = document.createElement("div")
@@ -222,7 +222,7 @@ async function getAlbum() {
     let folder = []
     for (let index = 0; index < anchor.length; index++) {
         const element = anchor[index];
-        let folderName = element.href.split("Assets/Songs/")[1]
+        let folderName = element.href.split("public/Assets/Songs/")[1]
         if (folderName) {
 
             folder.push(folderName.replaceAll("%20", " "))
@@ -256,16 +256,16 @@ async function main() {
     
     for (let index = 0; index < folder.length; index++) {
         const element = folder[index];
-        let jsn = await fetch(`Assets/Songs/${element}/info.json`)
+        let jsn = await fetch(`public/Assets/Songs/${element}/info.json`)
         let jsnFile = await jsn.json()
         
       
 
         let cardHtml = ` <div class="album-card">
                              <div class = album-card-child>
-                            <div style="background-image: url('Assets/Songs/${element}/cover.jpeg');" class="album-card-img-div">
+                            <div style="background-image: url('public/Assets/Songs/${element}/cover.jpeg');" class="album-card-img-div">
                                 <div class="play-green p-album">
-                                    <img src="Assets/images/play-solid-sharp.svg" alt="">
+                                    <img src="public/Assets/images/play-solid-sharp.svg" alt="">
                                 </div>
                             </div>
                             <div class="album-heading-div ">
@@ -297,7 +297,7 @@ async function main() {
             }
 
             // document.querySelector(".left-closer").style.display = "block"
-            play_btn.src = "Assets/images/play-solid-sharp.svg"
+            play_btn.src = "public/Assets/images/play-solid-sharp.svg"
             const menuImg = document.querySelector(".main-logo-div");
 
 
@@ -308,7 +308,7 @@ async function main() {
 
 
             let logoDiv1 = document.querySelector(".main-logo-div");
-            logoDiv1.style.backgroundImage = 'url("Assets/images/close-img.svg")';
+            logoDiv1.style.backgroundImage = 'url("public/Assets/images/close-img.svg")';
 
 
             // window.addEventListener("load", updateBackgroundImage); 
@@ -326,7 +326,7 @@ async function main() {
             // document.querySelector(".left-section").style.left = "0";
             document.querySelector(".create-playlist-div").style.display = "none"
             document.querySelector(".browse-podcast-div").style.display = "none"
-            // document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg"
+            // document.querySelector(".play-btn").src = "public/Assets/images/play-solid-sharp.svg"
             let albumCard = card.querySelector(".artist-Name-Album");
 
             if (albumCard) {  // Check if the element exists
@@ -345,8 +345,8 @@ async function main() {
                     let parasedSong = element.replaceAll("%20", " ").replaceAll("%2C", ",").replaceAll(".mp3", "")
                     SongsCardUL.innerHTML += ` <li>
             <div class="songs-details">
-                <div class = songs-details-child><img class= "li_img" src="Assets/images/${album_t.replace(" ", "%20") + ".jpeg"}" alt=""><div class = "song-info-div">${parasedSong} </div></div>
-                <span class = "span_of_play"><img class="play  play_of_li" src="Assets/images/play-btn.svg" alt=""></span>
+                <div class = songs-details-child><img class= "li_img" src="public/Assets/images/${album_t.replace(" ", "%20") + ".jpeg"}" alt=""><div class = "song-info-div">${parasedSong} </div></div>
+                <span class = "span_of_play"><img class="play  play_of_li" src="public/Assets/images/play-btn.svg" alt=""></span>
             </div>
            </li>`
 
@@ -374,18 +374,18 @@ async function main() {
                         // If the clicked song is already playing, pause it
                         if (playIcon.src.endsWith("pause-white-for-li.svg")) {
                             currentSong.pause();
-                            playIcon.src = "Assets/images/play-btn.svg";
-                            document.querySelector(".play-btn").src = "Assets/images/play-solid-sharp.svg"
+                            playIcon.src = "public/Assets/images/play-btn.svg";
+                            document.querySelector(".play-btn").src = "public/Assets/images/play-solid-sharp.svg"
                         } else {
                             // First, reset all other songs
                             document.querySelectorAll(".songs-card li").forEach(li => {
                                 li.style.border = "1px solid white";
-                                li.querySelector(".play_of_li").src = "Assets/images/play-btn.svg";
+                                li.querySelector(".play_of_li").src = "public/Assets/images/play-btn.svg";
                             });
 
                             // Then, play the selected song and update its icon
                             playmusic(album_t, e.querySelector(".song-info-div").innerHTML.trim());
-                            playIcon.src = "Assets/images/pause-white-for-li.svg";
+                            playIcon.src = "public/Assets/images/pause-white-for-li.svg";
                             e.style.border = "1px solid blue";
                         }
 
@@ -450,11 +450,11 @@ async function main() {
 
                                 if (songName === currentSongName) {
                                     song.style.border = "1px solid blue";
-                                    playIcon.src = "Assets/images/pause-white-for-li.svg"; // Change icon
+                                    playIcon.src = "public/Assets/images/pause-white-for-li.svg"; // Change icon
 
                                 } else {
                                     song.style.border = "1px solid white"; // Reset border to white all
-                                    playIcon.src = "Assets/images/play-btn.svg";
+                                    playIcon.src = "public/Assets/images/play-btn.svg";
                                 }
                             });
                         }
@@ -493,7 +493,7 @@ async function main() {
 
 
                         // let play_of_li = document.querySelector(".play_of_li")
-                        // play_of_li.src = "Assets/images/pause-white-for-li.svg"
+                        // play_of_li.src = "public/Assets/images/pause-white-for-li.svg"
 
 
 
@@ -506,7 +506,7 @@ async function main() {
                         e.style.border = "1px solid blue";
 
 
-                        // e.querySelector(".play_of_li").src = "Assets/images/pause-white-for-li.svg";
+                        // e.querySelector(".play_of_li").src = "public/Assets/images/pause-white-for-li.svg";
 
 
 
@@ -572,13 +572,13 @@ async function main() {
     speaker.addEventListener("click", () => {
 
         if (speaker.src.endsWith("volume_up.svg")) {
-            speaker.src = "Assets/images/volume_zero.svg"
+            speaker.src = "public/Assets/images/volume_zero.svg"
 
             range.value = 0;
             currentSong.volume = range.value
         }
         else if (speaker.src.endsWith("volume_zero.svg")) {
-            speaker.src = "Assets/images/volume_up.svg"
+            speaker.src = "public/Assets/images/volume_up.svg"
             range.value = 100;
             currentSong.volume = range.value
         }
@@ -628,7 +628,7 @@ async function main() {
 
                 if (currentSongName === songName) {
                     // song.style.border = "1px solid blue"; 
-                    playIcon.src = "Assets/images/pause-white-for-li.svg"; // Change icon
+                    playIcon.src = "public/Assets/images/pause-white-for-li.svg"; // Change icon
 
                 }
             });
@@ -647,13 +647,13 @@ async function main() {
         if (currentSong.paused) {
             currentSong.play()
 
-            // play_btn.src = "Assets/images/pause-btn.svg"
+            // play_btn.src = "public/Assets/images/pause-btn.svg"
 
             Array.from(document.querySelector(".songs-card").getElementsByTagName("li")).forEach(ele => {
 
                 ele.querySelectorAll(".play_of_li").forEach(img => {
-                    // ele.img.src = "Assets/images/pause-white-for-li.svg"
-                    play_btn.src = "Assets/images/pause-btn.svg"
+                    // ele.img.src = "public/Assets/images/pause-white-for-li.svg"
+                    play_btn.src = "public/Assets/images/pause-btn.svg"
 
 
 
@@ -679,8 +679,8 @@ async function main() {
             Array.from(document.querySelector(".songs-card").getElementsByTagName("li")).forEach(element => {
 
                 element.querySelectorAll(".play_of_li").forEach(img => {
-                    img.src = "Assets/images/play-btn.svg"
-                    play_btn.src = "Assets/images/play-solid-sharp.svg"
+                    img.src = "public/Assets/images/play-btn.svg"
+                    play_btn.src = "public/Assets/images/play-solid-sharp.svg"
 
 
 
@@ -786,7 +786,7 @@ async function main() {
             if (bgImage_parsedLink.endsWith("menu-bar.svg")) {
 
 
-                menu_img.style.backgroundImage = 'url("Assets/images/close-img.svg")';
+                menu_img.style.backgroundImage = 'url("public/Assets/images/close-img.svg")';
                 document.querySelector(".left-section").style.left = "6px"
                 document.querySelector(".left-section").style.display = "inline-block"
                 if (window.matchMedia("(max-width: 770px)").matches) {
@@ -803,7 +803,7 @@ async function main() {
 
             else if (bgImage_parsedLink.endsWith("close-img.svg")) {
 
-                menu_img.style.backgroundImage = 'url("Assets/images/menu-bar.svg")';
+                menu_img.style.backgroundImage = 'url("public/Assets/images/menu-bar.svg")';
                 document.querySelector(".left-section").style.left = "-98%"
                 if (window.matchMedia("(max-width: 770px)").matches) {
                     document.querySelector(".left-closer").style.display = "none"
@@ -830,7 +830,7 @@ async function main() {
     left_closer.addEventListener("click", () => {
         document.querySelector(".left-section").style.left = "-98%";
         left_closer.style.display = "none"
-        menu_img.style.backgroundImage = 'url("Assets/images/menu-bar.svg")';
+        menu_img.style.backgroundImage = 'url("public/Assets/images/menu-bar.svg")';
 
     })
     menu_bar()
@@ -857,7 +857,7 @@ document.querySelectorAll(".card-container div").forEach(c => {
         }
 
         // document.querySelector(".left-closer").style.display = "block"
-        play_btn.src = "Assets/images/play-solid-sharp.svg"
+        play_btn.src = "public/Assets/images/play-solid-sharp.svg"
         const menuImg = document.querySelector(".main-logo-div");
 
 
@@ -867,7 +867,7 @@ document.querySelectorAll(".card-container div").forEach(c => {
 
 
         let logoDiv1 = document.querySelector(".main-logo-div");
-        logoDiv1.style.backgroundImage = 'url("Assets/images/close-img.svg")';
+        logoDiv1.style.backgroundImage = 'url("public/Assets/images/close-img.svg")';
 
 
         // window.addEventListener("load", updateBackgroundImage); 

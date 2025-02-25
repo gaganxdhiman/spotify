@@ -1,4 +1,4 @@
-console.log("Index.Js is Running...");
+
 // function for generating Artist cards ------------------------------------
 
 function ArtistCard(img_url, artistName) {
@@ -6,7 +6,7 @@ function ArtistCard(img_url, artistName) {
     
         <div style="background-image: url('${img_url}');" class="card-img-div">
             <div class="play-green">
-                <img src="Assets/images/play-solid-sharp.svg" alt="">
+                <img src="public/Assets/images/play-solid-sharp.svg" alt="">
             </div>
         </div>
         <div class="card-heading-div">
@@ -22,12 +22,12 @@ function ArtistCard(img_url, artistName) {
 }
 
 
-ArtistCard("Assets/images/pritam-img.jpeg", "Pritam");
-ArtistCard("Assets/images/arijit-img.jpg", "Arijit Singh");
-ArtistCard("Assets/images/sachin-jigar-img.jpg", "Sachin Jigar");
-ArtistCard("Assets/images/rehman-img.jpeg", "A.R. Rehman");
-ArtistCard("Assets/images/vishal-img.jpeg", "Vishal Sheikher");
-ArtistCard("Assets/images/atif-img.jpg", "Atif Aslam");
+ArtistCard("/public/Assets/images/pritam-img.jpeg", "Pritam");
+ArtistCard("/public/Assets/images/arijit-img.jpg", "Arijit Singh");
+ArtistCard("/public/Assets/images/sachin-jigar-img.jpg", "Sachin Jigar");
+ArtistCard("/public/Assets/images/rehman-img.jpeg", "A.R. Rehman");
+ArtistCard("/public/Assets/images/vishal-img.jpeg", "Vishal Sheikher");
+ArtistCard("/public/Assets/images/atif-img.jpg", "Atif Aslam");
 
 
 

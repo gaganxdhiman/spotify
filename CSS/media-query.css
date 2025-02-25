@@ -59,7 +59,7 @@
 
 @media (min-width:1320px) {
     .main-logo-div {
-        background-image: url(../Assets/images/main-logo.svg);
+        background-image: url(../public/Assets/images/main-logo.svg);
     }
 
     .spotify-div {
@@ -294,7 +294,7 @@
     }
 
     .main-logo-div {
-        background-image: url(../Assets/images/menu-bar.svg);
+        background-image: url(../public/Assets/images/menu-bar.svg);
         display: flex;
 
     }
