@@ -4,7 +4,7 @@
 function ArtistCard(img_url, artistName) {
     let cardHtml = `<div class="card">
     
-        <div style="background-image: url('${img_url}');" class="card-img-div">
+        <div style="background-image: url('${img_url}');" class="card-img-div"> 
             <div class="play-green">
                 <img src="public/Assets/images/play-solid-sharp.svg" alt="">
             </div>
